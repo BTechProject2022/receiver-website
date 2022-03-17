@@ -6,9 +6,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
-// Load input validation
-//const validateRegisterInput = require("../validation/register");
-//const validateLoginInput = require("../validation/login");
+require("dotenv").config();
+const LOCAL_IP = process.env.LOCAL_IP;
+const PORT = process.env.PORT;
+const MAIN_BACKEND_PORT = process.env.MAIN_BACKEND_PORT;
 
 // Load User model
 const User = require("../models/UserModel");
@@ -34,8 +35,8 @@ router.post("/create", (req, res) => {
   const data = JSON.stringify(reqObject);
 
   const options = {
-    hostname: "localhost",
-    port: 8080,
+    hostname: LOCAL_IP,
+    port: MAIN_BACKEND_PORT,
     path: "/createDID",
     method: "POST",
     headers: {
@@ -135,8 +136,8 @@ router.post("/create", (req, res) => {
               console.log(stringData);
 
               const opts = {
-                hostname: "localhost",
-                port: 8080,
+                hostname: LOCAL_IP,
+                port: MAIN_BACKEND_PORT,
                 path: "/createSchema",
                 method: "POST",
                 headers: {

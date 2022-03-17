@@ -10,6 +10,11 @@ const qs = require("qs");
 const Credential = require("../models/CredModel");
 const User = require("../models/UserModel");
 
+require("dotenv").config();
+const LOCAL_IP = process.env.LOCAL_IP;
+const PORT = process.env.PORT;
+const MAIN_BACKEND_PORT = process.env.MAIN_BACKEND_PORT;
+
 //Utility function
 const getCredentialData = async (credential, adminDid, hash, sign) => {
   return new Promise(async (resolve, reject) => {
@@ -23,8 +28,8 @@ const getCredentialData = async (credential, adminDid, hash, sign) => {
     let path = "/getCredential?" + qs.stringify(requestData);
 
     const options = {
-      hostname: "localhost",
-      port: 8080,
+      hostname: LOCAL_IP,
+      port: MAIN_BACKEND_PORT,
       path: path,
       method: "GET",
     };
@@ -127,8 +132,8 @@ router.post("/send", (req, res) => {
       const data = JSON.stringify(requestData);
 
       const options = {
-        hostname: "localhost",
-        port: 8080,
+        hostname: LOCAL_IP,
+        port: MAIN_BACKEND_PORT,
         path: "/getCredential",
         method: "POST",
         headers: {
@@ -169,7 +174,7 @@ router.post("/send", (req, res) => {
                     .save()
                     .then((data) => {
                       console.log(data);
-                      res.status(200).json(data);
+                      res.status(200).json({ msg: "credentials received" });
                     })
                     .catch((err) => {
                       console.log(err);
@@ -184,7 +189,7 @@ router.post("/send", (req, res) => {
                     .save()
                     .then((data) => {
                       console.log(data);
-                      res.status(200).json(data);
+                      res.status(200).json({ msg: "credentials received" });
                     })
                     .catch((err) => {
                       console.log(err);
