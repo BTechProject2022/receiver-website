@@ -1,31 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { QRCode } from "react-qr-svg";
-import {
-  Modal,
-  Card,
-  Row,
-  Col,
-  Button,
-  Container,
-  Table,
-  Accordion,
-  Alert,
-} from "react-bootstrap";
+import { Container, Accordion, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 require("dotenv").config();
 const LOCAL_IP = process.env.REACT_APP_LOCAL_IP;
-const PORT = process.env.REACT_APP_PORT;
 const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
-const MAIN_BACKEND_PORT = process.env.REACT_APP_MAIN_BACKEND_PORT;
 
 const CredentialList = () => {
-  const localUserData = useSelector((state) => state.auth.user);
   const [credList, setCredList] = useState([]);
-  const [userData, setUserData] = useState({});
-  const [show, setShow] = useState(false);
-  const [qrValue, setQrValue] = useState("");
 
   useEffect(() => {
     axios

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import classnames from "classnames";
 import {
   Row,
   Col,
   FormControl,
-  InputGroup,
   Button,
   Form,
   Card,
@@ -16,11 +13,9 @@ import {
 
 require("dotenv").config();
 const LOCAL_IP = process.env.REACT_APP_LOCAL_IP;
-const PORT = process.env.REACT_APP_PORT;
 const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
 
 const CreateSchema = () => {
-  const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.auth.user.email);
   const [user, setUser] = useState({
     address: "",

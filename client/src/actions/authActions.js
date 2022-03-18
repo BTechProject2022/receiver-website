@@ -6,7 +6,6 @@ import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 
 require("dotenv").config();
 const LOCAL_IP = process.env.REACT_APP_LOCAL_IP;
-const PORT = process.env.REACT_APP_PORT;
 const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
 
 //Register User
