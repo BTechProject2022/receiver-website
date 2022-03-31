@@ -62,6 +62,7 @@ router.get("/info", (req, res) => {
       return res.status(404).json({ emailnotfound: "Email not found" });
     }
     res.status(200).json({
+      orgName: user.orgName,
       studentId: user.studentId,
       name: user.name,
       email: user.email,

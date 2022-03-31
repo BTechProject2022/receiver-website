@@ -18,6 +18,7 @@ const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
 const CreateSchema = () => {
   const userEmail = useSelector((state) => state.auth.user.email);
   const [user, setUser] = useState({
+    orgName: "",
     address: "",
     publicKey: "",
     privateKey: "",
@@ -25,6 +26,7 @@ const CreateSchema = () => {
   });
 
   const [input, setInput] = useState({
+    orgName: "",
     address: "",
     publicKey: "",
     privateKey: "",
@@ -40,6 +42,7 @@ const CreateSchema = () => {
       .then((data) => {
         data = data.data;
         setUser({
+          orgName: data.orgName,
           address: data.address,
           publicKey: data.publicKey,
           privateKey: data.privateKey,
@@ -64,6 +67,7 @@ const CreateSchema = () => {
     axios
       .post("http://" + LOCAL_IP + ":" + BACKEND_PORT + "/api/did/create", {
         email: userEmail,
+        orgName: input.orgName,
         address: input.address,
         publicKey: input.publicKey,
         privateKey: input.privateKey,
@@ -72,12 +76,14 @@ const CreateSchema = () => {
       .then((data) => {
         console.log(data.did);
         setUser({
+          orgName: data.orgName,
           address: data.address,
           publicKey: data.publicKey,
           privateKey: data.privateKey,
           did: data.did,
         });
         setInput({
+          orgName: "",
           address: "",
           publicKey: "",
           privateKey: "",
@@ -98,6 +104,12 @@ const CreateSchema = () => {
             <Form onSubmit={onSubmit}>
               {!!user.did ? (
                 <>
+                  <Form.Group as={Row} className="mb-3">
+                    <Form.Label column sm="2">
+                      Org Name:
+                    </Form.Label>
+                    <Col sm="10">{user.orgName}</Col>
+                  </Form.Group>
                   <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">
                       DID:
@@ -125,6 +137,19 @@ const CreateSchema = () => {
                 </>
               ) : (
                 <>
+                  <Form.Group as={Row} className="mb-3">
+                    <Form.Label column sm="2">
+                      Org Name
+                    </Form.Label>
+                    <Col sm="10">
+                      <Form.Control
+                        type="text"
+                        value={input.orgName}
+                        name="orgName"
+                        onChange={onChange}
+                      />
+                    </Col>
+                  </Form.Group>
                   <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm="2">
                       Address

@@ -8,7 +8,6 @@ const keys = require("../config/keys");
 
 require("dotenv").config();
 const LOCAL_IP = process.env.LOCAL_IP;
-const PORT = process.env.PORT;
 const MAIN_BACKEND_PORT = process.env.MAIN_BACKEND_PORT;
 
 // Load User model
@@ -25,14 +24,18 @@ router.post("/create", (req, res) => {
     address: req.body.address,
     publicKey: req.body.publicKey,
     privateKey: req.body.privateKey,
+    orgName: req.body.orgName,
   };
 
   //getting did from main server.
   const reqObject = {
     address: userData.address,
     publicKey: userData.publicKey,
+    name: userData.orgName,
   };
   const data = JSON.stringify(reqObject);
+
+  console.log(LOCAL_IP, MAIN_BACKEND_PORT);
 
   const options = {
     hostname: LOCAL_IP,
@@ -52,6 +55,7 @@ router.post("/create", (req, res) => {
       response.on("data", (d) => {
         const { did } = JSON.parse(d);
         User.findOne({ email: userData.email }).then((user) => {
+          user.orgName = userData.orgName;
           user.address = userData.address;
           user.publicKey = userData.publicKey;
           user.privateKey = userData.privateKey;

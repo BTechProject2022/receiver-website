@@ -43,6 +43,10 @@ const UserModel = new Schema({
     type: String,
     default: "",
   },
+  orgName: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("users", UserModel);
