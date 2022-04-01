@@ -11,8 +11,7 @@ const Credential = require("../models/CredModel");
 const User = require("../models/UserModel");
 
 require("dotenv").config();
-const LOCAL_IP = process.env.LOCAL_IP;
-const PORT = process.env.PORT;
+const API_IP = process.env.API_IP;
 const MAIN_BACKEND_PORT = process.env.MAIN_BACKEND_PORT;
 
 //Utility function
@@ -28,7 +27,7 @@ const getCredentialData = async (credential, adminDid, hash, sign) => {
     let path = "/getCredential?" + qs.stringify(requestData);
 
     const options = {
-      hostname: LOCAL_IP,
+      hostname: API_IP,
       port: MAIN_BACKEND_PORT,
       path: path,
       method: "GET",
@@ -132,7 +131,7 @@ router.post("/send", (req, res) => {
       const data = JSON.stringify(requestData);
 
       const options = {
-        hostname: LOCAL_IP,
+        hostname: API_IP,
         port: MAIN_BACKEND_PORT,
         path: "/getCredential",
         method: "POST",
