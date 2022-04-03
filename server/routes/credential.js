@@ -6,9 +6,12 @@ const objectHash = require("object-hash");
 const secp = require("@noble/secp256k1");
 const qs = require("qs");
 
+const emitter = require("../config/emitter");
+
 // Load User model
 const Credential = require("../models/CredModel");
 const User = require("../models/UserModel");
+const { EventEmitter } = require("stream");
 
 require("dotenv").config();
 const API_IP = process.env.API_IP;
@@ -104,6 +107,33 @@ router.get("/getAll", async (req, res) => {
     });
 });
 
+// @route GET api/credential/getByUser
+// @desc get all creds belonging to a user.
+// @access Public
+router.get("/getByUser/:email", async (req, res) => {
+  const userEmail = req.params.email;
+  User.findOne({ email: userEmail })
+    .then(async (userData) => {
+      const studentId = userData.studentId;
+      if (userData) {
+        Credential.find({ studentId: studentId })
+          .then(async (credentials) => {
+            res.status(200).json({ creds: credentials });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({ error: err });
+          });
+      } else {
+        res.status(400).json({ msg: "user with that email doesn't exists" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+});
+
 // @route POST api/credential/send
 // @desc Used to send credential from app to receiver api.
 // @access Public
@@ -145,6 +175,7 @@ router.post("/send", (req, res) => {
         .request(options, (response) => {
           response.on("data", (d) => {
             const credData = JSON.parse(d);
+            console.log(credData);
             Credential.findOne({
               studentId: reqData.studentId,
               credDid: reqData.credDid,
@@ -160,9 +191,12 @@ router.post("/send", (req, res) => {
                   ":" +
                   currentdate.getMinutes();
                 if (cred === null) {
+                  console.log("credData:", credData);
                   newCred = new Credential({
                     studentId: reqData.studentId,
                     name: user.name,
+                    credName: credData.credentialSubject.credentialName,
+                    userEmail: user.email,
                     credDid: reqData.credDid,
                     date: datetime,
                     hash: reqData.hash,
@@ -173,6 +207,7 @@ router.post("/send", (req, res) => {
                     .save()
                     .then((data) => {
                       console.log(data);
+                      emitter.emit("receive" + user.email, data);
                       res.status(200).json({ msg: "credentials received" });
                     })
                     .catch((err) => {
@@ -188,6 +223,7 @@ router.post("/send", (req, res) => {
                     .save()
                     .then((data) => {
                       console.log(data);
+                      emitter.emit("update" + user.email, data);
                       res.status(200).json({ msg: "credentials received" });
                     })
                     .catch((err) => {
