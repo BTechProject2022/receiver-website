@@ -146,20 +146,22 @@ const Verification = () => {
                 )}
               </Card.Body>
             </Card>
-            {sharedCreds.length === 0 ? (
-              <Alert variant="info">No Credential has been shared yet</Alert>
-            ) : (
-              <>
-                <Container className="mt-4">
-                  <Row className="mt-4">
-                    <Col>
-                      <Card className="shadow px-1 pt-2">
-                        <Card.Title className="primary px-1 pt-2 text-center">
-                          <h2 className="text-center mt-2 mb-3">
-                            Previously Shared Credentials
-                          </h2>
-                        </Card.Title>
-                        <Card.Body>
+            <Container className="mt-4">
+              <Row className="mt-4">
+                <Col>
+                  <Card className="shadow px-1 pt-2">
+                    <Card.Title className="primary px-1 pt-2 text-center">
+                      <h2 className="text-center mt-2 mb-3">
+                        Previously Shared Credentials
+                      </h2>
+                    </Card.Title>
+                    <Card.Body>
+                      {sharedCreds.length === 0 ? (
+                        <Alert variant="info">
+                          No Credential has been shared yet
+                        </Alert>
+                      ) : (
+                        <>
                           <Table hover className="text-center">
                             <thead>
                               <tr>
@@ -199,13 +201,13 @@ const Verification = () => {
                               })}
                             </tbody>
                           </Table>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Container>
-              </>
-            )}
+                        </>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
           </>
         ) : (
           <Alert variant="danger" className="mt-5 w-60">

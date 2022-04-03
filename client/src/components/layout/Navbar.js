@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Container, Navbar, Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLandmark } from "@fortawesome/free-solid-svg-icons";
+
 import { logoutUser } from "../../actions/authActions";
 
 const NavBar = () => {
@@ -17,7 +20,13 @@ const NavBar = () => {
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="/">
-            <h4>Receiver Website</h4>
+            <FontAwesomeIcon
+              icon={faLandmark}
+              size="lg"
+              color="white"
+              className="mr-2"
+            />{" "}
+            Receiver Website
           </Navbar.Brand>
           {isAuthenticated && (
             <>
