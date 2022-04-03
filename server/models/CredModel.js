@@ -7,7 +7,15 @@ const CredModel = new Schema({
     type: String,
     required: true,
   },
+  credName: {
+    type: String,
+    default: "NA",
+  },
   studentId: {
+    type: String,
+    required: true,
+  },
+  userEmail: {
     type: String,
     required: true,
   },
