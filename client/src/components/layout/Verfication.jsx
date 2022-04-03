@@ -8,12 +8,19 @@ import {
   Button,
   Toast,
   ToastContainer,
+  Row,
+  Col,
+  Table,
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import socketio from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faCheck,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 require("dotenv").config();
 const LOCAL_IP = process.env.REACT_APP_LOCAL_IP;
@@ -64,7 +71,7 @@ const Verification = () => {
                   localUserData.email
               )
               .then((res) => {
-                console.log(res.data);
+                console.log("cred data:", res.data);
                 setSharedCred(res.data.creds);
               });
           });
@@ -139,33 +146,64 @@ const Verification = () => {
                 )}
               </Card.Body>
             </Card>
-            <h2 className="text-center mt-5 mb-3">
-              Previously Shared Credentials
-            </h2>
             {sharedCreds.length === 0 ? (
               <Alert variant="info">No Credential has been shared yet</Alert>
             ) : (
               <>
-                <Accordion className="w-75 mb-5">
-                  {sharedCreds.map((cred, index) => {
-                    console.log(cred);
-                    return (
-                      <>
-                        <Accordion.Item eventKey={index}>
-                          <Accordion.Header>
-                            <div>
-                              <strong>Name</strong> : {cred.credName}
-                              {" | "}
-                              <strong>User ID</strong> : {cred.studentId}{" "}
-                              {" | "}
-                              <strong>Time Shared</strong> : {cred.date}
-                            </div>
-                          </Accordion.Header>
-                        </Accordion.Item>
-                      </>
-                    );
-                  })}
-                </Accordion>
+                <Container className="mt-4">
+                  <Row className="mt-4">
+                    <Col>
+                      <Card className="shadow px-1 pt-2">
+                        <Card.Title className="primary px-1 pt-2 text-center">
+                          <h2 className="text-center mt-2 mb-3">
+                            Previously Shared Credentials
+                          </h2>
+                        </Card.Title>
+                        <Card.Body>
+                          <Table hover className="text-center">
+                            <thead>
+                              <tr>
+                                <th className="col-3">Credential Name</th>
+                                <th className="col-1">User ID</th>
+                                <th className="col-1">Time Shared</th>
+                                <th className="col-1">Access Given</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {sharedCreds.map((cred, index) => {
+                                console.log(cred);
+                                return (
+                                  <>
+                                    <tr>
+                                      <td>{cred.credName}</td>
+                                      <td>{cred.studentId}</td>
+                                      <td>{cred.date}</td>
+                                      <td>
+                                        {cred.credAccess ? (
+                                          <FontAwesomeIcon
+                                            icon={faCheck}
+                                            size="2x"
+                                            color="limegreen"
+                                          />
+                                        ) : (
+                                          <FontAwesomeIcon
+                                            icon={faXmark}
+                                            size="2x"
+                                            color="red"
+                                          />
+                                        )}
+                                      </td>
+                                    </tr>
+                                  </>
+                                );
+                              })}
+                            </tbody>
+                          </Table>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+                </Container>
               </>
             )}
           </>

@@ -116,9 +116,51 @@ router.get("/getByUser/:email", async (req, res) => {
     .then(async (userData) => {
       const studentId = userData.studentId;
       if (userData) {
-        Credential.find({ studentId: studentId })
-          .then(async (credentials) => {
-            res.status(200).json({ creds: credentials });
+        User.find({ email: "admin@admin.com" })
+          .then(async (adminData) => {
+            Credential.find({ studentId: studentId })
+              .then(async (credentials) => {
+                const hash = sha256("userDid").toString();
+                const signHash = await secp.sign(
+                  hash,
+                  adminData[0].privateKey,
+                  {
+                    canonical: true,
+                  }
+                );
+                let sign = secp.Signature.fromDER(signHash);
+                sign = sign.toCompactHex();
+
+                let credCount = credentials.length;
+                let credPromises = [];
+
+                for (let i = 0; i < credCount; i++) {
+                  credPromises.push(
+                    getCredentialData(
+                      credentials[i],
+                      adminData[0].did,
+                      hash,
+                      sign
+                    )
+                  );
+                }
+                Promise.all(credPromises).then((result) => {
+                  const filteredCreds = [];
+                  for (let i = 0; i < result.length; i++) {
+                    filteredCreds.push({
+                      credName: credentials[i].credName,
+                      studentId: credentials[i].studentId,
+                      date: credentials[i].date,
+                      credAccess: result[i].length !== 0,
+                    });
+                  }
+                  res.status(200).json({ creds: filteredCreds });
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json({ error: err });
+              });
           })
           .catch((err) => {
             console.log(err);
