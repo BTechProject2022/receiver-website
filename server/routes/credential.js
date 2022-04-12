@@ -237,7 +237,7 @@ router.post("/send", (req, res) => {
                   newCred = new Credential({
                     studentId: reqData.studentId,
                     name: user.name,
-                    credName: credData.credentialSubject.credentialName,
+                    credName: credData.credentialName,
                     userEmail: user.email,
                     credDid: reqData.credDid,
                     date: datetime,
