@@ -32,7 +32,7 @@ app.use(
 
 app.use(bodyParser.json());
 
-const dbURL = "mongodb://localhost:27017/receiver-db";
+const dbURL = "mongodb://localhost:27017/hospital-receiver-db";
 
 //connect to MongoDB
 mongoose

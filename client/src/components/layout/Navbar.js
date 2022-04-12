@@ -2,7 +2,10 @@ import React from "react";
 import { Button, Container, Navbar, Nav } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLandmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHospitalSymbol,
+  faHouseMedical,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { logoutUser } from "../../actions/authActions";
 
@@ -21,12 +24,12 @@ const NavBar = () => {
         <Container>
           <Navbar.Brand href="/">
             <FontAwesomeIcon
-              icon={faLandmark}
+              icon={faHouseMedical}
               size="lg"
               color="white"
               className="mr-2"
             />{" "}
-            Receiver Website
+            Jupiter Hospital Website
           </Navbar.Brand>
           {isAuthenticated && (
             <>
