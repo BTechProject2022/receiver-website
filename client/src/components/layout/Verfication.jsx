@@ -128,7 +128,7 @@ const Verification = () => {
             <Card className="shadow w-60 mt-5">
               <Card.Body className="px-5 d-flex flex-column align-items-center">
                 <h5 className="my-3">
-                  Scan the below QR code to verify that you are a student
+                  Scan the below QR code to share Medical Report
                 </h5>
                 {showQrCode ? (
                   <QRCode

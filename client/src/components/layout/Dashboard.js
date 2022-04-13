@@ -19,7 +19,9 @@ class Dashboard extends Component {
           <div className="col-sm-12">
             <h4>
               Hey there, <b className="name-lable">{user.name.split(" ")[0]}</b>
-              <p className="mt-4">You are logged into the College Website</p>
+              <p className="mt-4">
+                You are logged into the Jupiter Hospital's Website
+              </p>
             </h4>
           </div>
         </div>
