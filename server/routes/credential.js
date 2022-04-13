@@ -147,11 +147,14 @@ router.get("/getByUser/:email", async (req, res) => {
                 Promise.all(credPromises).then((result) => {
                   const filteredCreds = [];
                   for (let i = 0; i < result.length; i++) {
+                    console.log(result[i]);
                     filteredCreds.push({
                       credName: credentials[i].credName,
                       studentId: credentials[i].studentId,
                       date: credentials[i].date,
-                      credAccess: result[i].length !== 0,
+                      credAccess:
+                        result[i].msg !==
+                        "Access to this Document has been revoked",
                     });
                   }
                   res.status(200).json({ creds: filteredCreds });
