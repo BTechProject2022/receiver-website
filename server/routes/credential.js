@@ -151,7 +151,9 @@ router.get("/getByUser/:email", async (req, res) => {
                       credName: credentials[i].credName,
                       studentId: credentials[i].studentId,
                       date: credentials[i].date,
-                      credAccess: result[i].length !== 0,
+                      credAccess:
+                        result[i].msg !==
+                        "Access to this Document has been revoked",
                     });
                   }
                   res.status(200).json({ creds: filteredCreds });
